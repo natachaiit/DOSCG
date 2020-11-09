@@ -1,6 +1,16 @@
 const router = require('express').Router();
+const redis = require('redis');
+const { promisify } = require('util');
 
-router.get('/', (req, res) => {
+const clientredis = redis.createClient();
+const getAsync = promisify(clientredis.get).bind(clientredis)
+
+router.get('/', async (req, res) => {
+    const cached = await getAsync('findxyz')
+    if(cached){
+        return res.status(200).json(JSON.parse(cached));
+    }
+
     let listdata = [];
     let loopset = 7;
     let last = 3;
@@ -8,6 +18,9 @@ router.get('/', (req, res) => {
         listdata.push(last)
         last = last + (index * 2);
     }
+
+    //set expire keep data
+    clientredis.setex('findxyz', 60, JSON.stringify(listdata));
     res.status(200).json(listdata);
 });
 

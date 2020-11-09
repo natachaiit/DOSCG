@@ -35,7 +35,7 @@ export default {
       errors: "",
     };
   },
-  created() {
+  mounted() {
     axios
       .get(`http://localhost:3000/googleapi`)
       .then((response) => {

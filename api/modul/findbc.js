@@ -1,11 +1,21 @@
 const { Expression, Equation } = require('algebra.js');
-
 const router = require('express').Router();
+const redis = require('redis');
+const { promisify } = require('util');
 
-router.get('/', (req, res) => {
+const clientredis = redis.createClient();
+const getAsync = promisify(clientredis.get).bind(clientredis)
+
+router.get('/', async (req, res) => {
+
+    const cached = await getAsync('findbc')
+    if(cached){
+        return res.status(200).json(JSON.parse(cached));
+    }
+
     let responedata = {
-        datafirstsum : '',
-        datasecondsum : '',
+        datafirstsum: '',
+        datasecondsum: '',
     }
     var expr = new Expression("x");
     expr = expr.add(21);
@@ -18,6 +28,9 @@ router.get('/', (req, res) => {
     var eq = new Equation(expr, -21);
     var datasecondsum = eq.solveFor("x");
     responedata.datasecondsum = datasecondsum.numer;
+
+    //set expire keep data
+    clientredis.setex('findbc', 60, JSON.stringify(responedata));
     res.status(200).json(responedata);
 });
 
