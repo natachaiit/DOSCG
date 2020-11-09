@@ -20,9 +20,7 @@
     "express": "^4.17.1",
     "http": "0.0.1-security",
     "http-errors": "^1.8.0",
-    "redis": "^3.0.2"
-  },
-  "devDependencies": {
+    "redis": "^3.0.2",
     "morgan": "^1.10.0"
   }
 }
