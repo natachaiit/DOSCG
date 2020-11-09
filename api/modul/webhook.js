@@ -1,7 +1,6 @@
 require('dotenv').config()
 const line = require('@line/bot-sdk');
 const router = require('express').Router();
-const { getAsync, clientredis } = require('../libs/redis')
 const sockets = require('../libs/sockets');
 
 
@@ -23,7 +22,6 @@ const listphrases = [{
 
 
 router.post('/', line.middleware(config), (req, res) => {
-    clientredis.setex(req.body.events[0].replyToken, 20, JSON.stringify(req.body));
     Promise
         .all(
             req.body.events.map(handleEvent)
@@ -48,10 +46,7 @@ async function handleEvent(event) {
         });
     }
     else {
-        const cached = await getAsync(event.replyToken)
-        if (cached) {
-            let datacash = JSON.parse(cached);
-            client.getProfile(datacash.destination).then(data => {
+            client.getProfile(event.source.userId).then(data => {
                 console.log(data);
             })
                 .catch(e => {
