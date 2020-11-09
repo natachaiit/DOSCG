@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+
+  //Api Server
+  nodejs:
+    build: .
+    links:
+        - redis
+    restart: always
+    ports:
+        - "3000:3000"
+    environment:
+        REDIS_HOST: redis
+        NODE_ENV: production
+
+  //Caching Server
+  redis:
+        image: redis:latest
+        volumes: 
+            - ./redis.conf:/usr/local/etc/redis/redis.conf
+        restart: always
+        ports:
+            - "6379:6379"
+        deploy:
+            resources:
+                limits:
+                    cpus: 1
+                    memory: 1G
+
