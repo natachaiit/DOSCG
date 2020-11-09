@@ -4,7 +4,6 @@ const redis = require('redis');
 const {getAsync, clientredis} = require('../libs/redis')
 
 router.get('/', async (req, res) => {
-
     const cached = await getAsync('findbc')
     if(cached){
         return res.status(200).json(JSON.parse(cached));
@@ -17,7 +16,7 @@ router.get('/', async (req, res) => {
     var expr = new Expression("x");
     expr = expr.add(21);
 
-
+    // Substituting the equation
     var eq = new Equation(expr, 23);
     var datafirstsum = eq.solveFor("x");
     responedata.datafirstsum = datafirstsum.numer;

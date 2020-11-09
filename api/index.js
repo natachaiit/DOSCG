@@ -1,9 +1,12 @@
-const express = require('express'),
-    logger = require('morgan'),
-    app = express(),
-    bodyParser = require('body-parser');
+const express = require('express');
+const logger = require('morgan');
+const app = express();
+const http = require('http').createServer(app);
+const bodyParser = require('body-parser');
+const sockets = require('./libs/sockets');
 
 app.use(logger('dev'));
+sockets.connect(http)
 
 // Add headers
 app.use(function (req, res, next) {
@@ -44,6 +47,6 @@ app.use(function (err, req, res, next) {
     console.log(err);
 })
 
-app.listen(process.env.PORT || 3000, () => {
+http.listen(process.env.PORT || 3000, (req, res) => {
     console.log(`Server running on port: ${process.env.PORT || 3000}`);
 })

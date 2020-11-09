@@ -7,7 +7,6 @@ router.get('/', async (req, res) => {
     if(cached){
         return res.status(200).json(JSON.parse(cached));
     }
-
     let listdata = [];
     let loopset = 7;
     let last = 3;

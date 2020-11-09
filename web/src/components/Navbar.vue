@@ -33,12 +33,52 @@
           </li>
         </ul>
       </div>
+      <div class="position-relative showalarm">
+        <img src="@/assets/notification.png" height="24" />
+        <span
+          v-if="datacount"
+          class="notification-count d-flex justify-content-center align-items-center"
+          >6</span
+        >
+      </div>
     </nav>
   </div>
 </template>
 
 <script>
+import io from "socket.io-client";
+
 export default {
   name: "Navbar",
+  data() {
+    return {
+      socket: io('http://localhost:3000/'),
+      datacount: 0,
+    };
+  },
+  methods() {
+    this.socket.on("usersUpdate", (data) => {
+      console.log(data);
+    });
+  },
 };
 </script>
+
+<style>
+.notification-count {
+  position: absolute;
+  z-index: 1;
+  top: -6px;
+  right: -10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #ff4927;
+  color: #fff;
+}
+@media screen and (max-width: 800px) {
+  .showalarm {
+    display: none;
+  }
+}
+</style>
