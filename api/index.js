@@ -14,6 +14,8 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.use('/webhook', require('./modul/webhook'));
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -25,7 +27,6 @@ app.get('/', (req, res) => {
 app.use('/findxyz', require('./modul/findxyz'))
 app.use('/findbc', require('./modul/findbc'))
 app.use('/googleapi', require('./modul/googleapi'))
-app.use('/webhook', require('./modul/webhook'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
