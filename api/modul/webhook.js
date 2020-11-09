@@ -50,14 +50,14 @@ async function handleEvent(event) {
     else {
         const cached = await getAsync(event.replyToken)
         if (cached) {
-            console.log(cached);
+            let datacash = JSON.parse(cached);
+            client.getProfile(datacash.destination).then(data => {
+                console.log(data);
+            })
+                .catch(e => {
+                    console.log(e);
+                })
         }
-        // client.getProfile().then(data => {
-        //     console.log(data);
-        // })
-        //     .catch(e => {
-        //         console.log(e);
-        //     })
         return Promise.resolve(null);
     }
 }
