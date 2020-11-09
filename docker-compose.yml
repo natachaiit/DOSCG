@@ -10,7 +10,7 @@ services:
         - "3000:3000"
     environment:
         REDIS_HOST: redis
-        REDIS_HOST: 6379
+        REDIS_PORT: 6379
         NODE_ENV: production
 
   redis:
