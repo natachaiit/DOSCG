@@ -10,7 +10,7 @@ const client = new line.Client(config);
 
 
 router.post('/', line.middleware(config), (req, res) => {
-    console.log(req.body);
+    console.log(req);
     Promise
         .all(req.body.events.map(handleEvent))
         .then((result) => res.json(result));
