@@ -1,7 +1,6 @@
 version: '3.7'
 services:
 
-  //Api Server
   nodejs:
     build: .
     links:
@@ -13,7 +12,6 @@ services:
         REDIS_HOST: redis
         NODE_ENV: production
 
-  //Caching Server
   redis:
         image: redis:latest
         volumes: 
