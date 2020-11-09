@@ -46,15 +46,14 @@ async function handleEvent(event) {
         });
     }
     else {
-            client.getProfile(event.source.userId).then(data => {
-                console.log(data);
+        client.getProfile(event.source.userId).then(data => {
+            console.log(data);
+        })
+            .catch(e => {
+                console.log(e);
             })
-                .catch(e => {
-                    console.log(e);
-                })
-        }
-        return Promise.resolve(null);
     }
+    return Promise.resolve(null);
 }
 
 module.exports = router;
