@@ -8,14 +8,13 @@ const config = {
 };
 const client = new line.Client(config);
 
-let listphrases = [{
+const listphrases = [{
     phrases: 'สวัสดี',
     responses: 'สวัสดีครับ'
 }]
 
 
 router.post('/', line.middleware(config), (req, res) => {
-    console.log(req.body);
     Promise
         .all(req.body.events.map(handleEvent))
         .then((result) => res.json(result));
@@ -26,17 +25,20 @@ function handleEvent(event) {
         return Promise.resolve(null);
     }
 
-    const filterValue = new RegExp('.*' + value.toLowerCase() + '.*');
+    const filterValue = new RegExp('.*' + event.message.text.toLowerCase() + '.*');
     const messageresponse = listphrases.filter((function (item) {
-        return filterValue.test(item.product_name.toLowerCase());
+        return filterValue.test(item.phrases.toLowerCase());
     }));
-
-    console.log(messageresponse);
-
-    return client.replyMessage(event.replyToken, {
-        type: 'text',
-        text: event.message.text
-    });
+    if(messageresponse.length !== 0){
+        return client.replyMessage(event.replyToken, {
+            type: 'text',
+            text: messageresponse[0].responses
+        });
+    }
+    else{
+        console.log('Not Havedata');
+        return Promise.resolve(null);
+    }
 }
 
 module.exports = router;
