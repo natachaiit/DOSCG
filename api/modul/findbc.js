@@ -1,10 +1,7 @@
 const { Expression, Equation } = require('algebra.js');
 const router = require('express').Router();
 const redis = require('redis');
-const { promisify } = require('util');
-
-const clientredis = redis.createClient();
-const getAsync = promisify(clientredis.get).bind(clientredis)
+const {getAsync, clientredis} = require('../libs/redis')
 
 router.get('/', async (req, res) => {
 
