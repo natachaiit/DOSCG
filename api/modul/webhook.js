@@ -46,8 +46,13 @@ async function handleEvent(event) {
         });
     }
     else {
-        client.getProfile(event.source.userId).then(data => {
-            console.log(data);
+        client.getProfile(event.source.userId).then(datauser => {
+            sockets.emit('line_answer_not_found', {
+                message: event.message.text,
+                username: datauser.displayName,
+                pictureUrl: datauser.pictureUrl,
+                timestamp: event.timestamp
+            })
         })
             .catch(e => {
                 console.log(e);

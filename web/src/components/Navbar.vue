@@ -52,12 +52,12 @@ export default {
   name: "Navbar",
   data() {
     return {
-      socket: io('http://localhost:3000/'),
+      socket: io('https://deveverynight.com/'),
       datacount: 0,
     };
   },
   methods() {
-    this.socket.on("usersUpdate", (data) => {
+    this.socket.on("line_answer_not_found", (data) => {
       console.log(data);
     });
   },
