@@ -14,6 +14,9 @@ app.use(function (req, res, next) {
     next();
 });
 
+// If another body parser already parsed a request's body, 
+// the webhook middleware cannot access to the raw body of the request. 
+// The raw body should be retrieved for signature validation.
 app.use('/webhook', require('./modul/webhook'));
 
 app.use(bodyParser.json())
