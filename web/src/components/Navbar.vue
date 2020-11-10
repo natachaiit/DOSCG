@@ -31,15 +31,37 @@
               >The Best Way go to Central World
             </router-link>
           </li>
+          <li class="nav-item">
+            <router-link to="/line" class="nav-link" active-class="active"
+              >Line
+            </router-link>
+          </li>
         </ul>
       </div>
-      <div class="position-relative showalarm">
+      <div class="position-relative showalarm" v-on:click="isActive = !isActive">
         <img src="@/assets/notification.png" height="24" />
         <span
           v-if="datacount"
           class="notification-count d-flex justify-content-center align-items-center"
-          >6</span
+          >{{ datacount }}</span
         >
+      </div>
+      <div class="col-4 p-3 position-absolute crad notishow" v-if="datacount && isActive">
+        <ul class="m-0 p-0">
+          <li
+            v-for="user_answer of datadetail"
+            :key="user_answer"
+            class="d-flex"
+          >
+            <div class="show_userimage">
+              <img :src="user_answer.pictureUrl" />
+            </div>
+            <div class="ml-2">
+              <p class="m-0">{{ user_answer.username }}</p>
+              <p>ข้อความที่ส่ง: {{ user_answer.message }}</p>
+            </div>
+          </li>
+        </ul>
       </div>
     </nav>
   </div>
@@ -52,19 +74,54 @@ export default {
   name: "Navbar",
   data() {
     return {
-      socket: io('https://deveverynight.com/'),
+      socket: io("https://deveverynight.com/"),
       datacount: 0,
+      isActive: false,
+      datadetail: [],
     };
   },
-  methods() {
+  mounted() {
+    if (localStorage.getItem("line_answer_not_found")) {
+      this.datadetail = JSON.parse(
+        localStorage.getItem("line_answer_not_found")
+      );
+      this.datacount = this.datadetail.length;
+    }
     this.socket.on("line_answer_not_found", (data) => {
-      console.log(data);
+      this.datadetail.push(data);
+      this.datadetail.sort((a, b) => b.timestamp - a.timestamp);
+      if (localStorage.getItem("line_answer_not_found")) {
+        this.datacount = this.datadetail.length;
+        localStorage.setItem(
+          "line_answer_not_found",
+          JSON.stringify(this.datadetail)
+        );
+      } else {
+        localStorage.setItem(
+          "line_answer_not_found",
+          JSON.stringify(this.datadetail)
+        );
+        this.datacount++;
+      }
     });
   },
 };
 </script>
 
 <style>
+.show_userimage img {
+  width: 50px;
+  height: 50px;
+  display: block;
+  border-radius: 50px;
+}
+.notishow {
+  right: 10px;
+  top: 60px;
+  z-index: 999;
+  max-height: 450px;
+  overflow-Y: auto;
+}
 .notification-count {
   position: absolute;
   z-index: 1;
