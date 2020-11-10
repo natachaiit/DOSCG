@@ -1,6 +1,6 @@
 <template>
   <Navbar />
-  <div class="container vertical-center">
+  <div class="container vertical-center setcontent">
     <router-view />
   </div>
   <Footer />
@@ -17,3 +17,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.setcontent{
+  height: calc(100vh - 120px);;
+}
+</style>

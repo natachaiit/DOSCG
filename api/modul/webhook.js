@@ -18,6 +18,10 @@ const listphrases = [{
 {
     phrases: 'หิว',
     responses: 'กินอะไรดีครับ'
+},
+{
+    phrases: 'แนะนำหน่อย',
+    responses: 'ไก่ย่างไหมครับ'
 }]
 
 
@@ -47,6 +51,8 @@ async function handleEvent(event) {
     }
     else {
         client.getProfile(event.source.userId).then(datauser => {
+
+            // Alarm No Answer
             sockets.emit('line_answer_not_found', {
                 message: event.message.text,
                 username: datauser.displayName,
